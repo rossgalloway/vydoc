@@ -20,6 +20,39 @@ export type Contract = {
   compilerVersion: number
   abi: string
   bytecode: string
+  author?: string
+  license?: string
+  title?: string
+  notice?: string
+  details?: string
+  methods: {
+    [methodSignature: string]: {
+      name: string
+      type: string
+      inputs: {
+        name: string
+        type: string
+        indexed?: boolean
+      }[]
+      outputs?: {
+        name: string
+        type: string
+        description?: string
+      }[]
+      stateMutability?: string
+      notice?: string
+      details?: string
+      params?: {
+        [paramName: string]: string
+      }
+      returns?: {
+        name: string
+        type: string
+        description?: string
+      }[]
+    }
+  }
+  events: AbiElement[]
 }
 
 export type RawContract = {
