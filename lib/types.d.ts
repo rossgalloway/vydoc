@@ -5,12 +5,45 @@ export declare type CliArguments = {
     format: Format;
     template: string;
 };
-export declare type Format = "markdown";
+export declare type Format = 'markdown';
 export declare const cliArgumentsDefault: CliArguments;
 export declare type Contract = {
     compilerVersion: number;
     abi: string;
     bytecode: string;
+    author?: string;
+    license?: string;
+    title?: string;
+    notice?: string;
+    details?: string;
+    methods: {
+        [methodSignature: string]: {
+            name: string;
+            type: string;
+            inputs: {
+                name: string;
+                type: string;
+                indexed?: boolean;
+            }[];
+            outputs?: {
+                name: string;
+                type: string;
+                description?: string;
+            }[];
+            stateMutability?: string;
+            notice?: string;
+            details?: string;
+            params?: {
+                [paramName: string]: string;
+            };
+            returns?: {
+                name: string;
+                type: string;
+                description?: string;
+            }[];
+        };
+    };
+    events: AbiElement[];
 };
 export declare type RawContract = {
     abi: AbiElement[];
@@ -38,9 +71,15 @@ export declare type RawContract = {
 };
 export declare type AbiElement = {
     name: string;
-    type: "event" | "function" | "constructor";
+    type: 'event' | 'function' | 'constructor';
     inputs: {
         name: string;
-        type: "string" | "uint256";
+        type: string;
+        indexed?: boolean;
     }[];
+    outputs?: {
+        name: string;
+        type: string;
+    }[];
+    stateMutability?: string;
 };
