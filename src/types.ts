@@ -1,57 +1,63 @@
 export type CliArguments = {
-  input: string;
-  output: string;
-  compiler: string;
-  format: Format;
+  input: string
+  output: string
+  compiler: string
+  format: Format
   template: string
-};
+}
 
-export type Format = "markdown";
+export type Format = 'markdown'
 
 export const cliArgumentsDefault = {
-  input: "./contracts",
-  output: "./docs",
-  compiler: "vyper",
-  format: "markdown",
-  template: "../src/templates/markdown.ejs"
-} as CliArguments;
+  input: './contracts',
+  output: './docs',
+  compiler: 'vyper',
+  format: 'markdown',
+  template: '../src/templates/markdown.ejs',
+} as CliArguments
 
 export type Contract = {
-  compilerVersion: number;
-  abi: string;
-  bytecode: string;
-};
+  compilerVersion: number
+  abi: string
+  bytecode: string
+}
 
 export type RawContract = {
-  abi: AbiElement[];
-  bytecode: string;
+  abi: AbiElement[]
+  bytecode: string
   devdoc: {
-    author: string;
-    license: string;
-    title: string;
-    notice: string;
-    details: string;
+    author: string
+    license: string
+    title: string
+    notice: string
+    details: string
     methods: {
       [key: string]: {
-        details: string;
-      };
-    };
-  };
+        details: string
+      }
+    }
+  }
   userdoc: {
-    notice: string;
+    notice: string
     methods: {
       [key: string]: {
-        notice: string;
-      };
-    };
-  };
-};
+        notice: string
+      }
+    }
+  }
+}
 
 export type AbiElement = {
-  name: string;
-  type: "event" | "function" | "constructor";
+  name: string
+  type: 'event' | 'function' | 'constructor'
   inputs: {
-    name: string;
-    type: "string" | "uint256";
-  }[];
-};
+    name: string
+    type: string
+    indexed?: boolean
+  }[]
+  outputs?: {
+    name: string
+    type: string
+  }[]
+  stateMutability?: string
+}
