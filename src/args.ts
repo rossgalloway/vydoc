@@ -16,11 +16,17 @@ export const options = option('input', {
     description: 'docs output dir',
     default: cliArgumentsDefault.output,
   })
-  .option('compiler', {
-    alias: 'c',
+  .option('vyperCompiler', {
+    alias: 'vc',
     type: 'string',
     description: 'Vyper compiler path',
-    default: cliArgumentsDefault.compiler,
+    default: cliArgumentsDefault.vyperCompiler,
+  })
+  .option('solidityCompiler', {
+    alias: 'sc',
+    type: 'string',
+    description: 'Solidity compiler path',
+    default: cliArgumentsDefault.solidityCompiler,
   })
   .option('format', {
     alias: 'f',

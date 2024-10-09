@@ -1,4 +1,4 @@
-import { join } from 'path'
+import { join, extname } from 'path'
 import { exec } from 'child_process'
 import { mergeWith, tap, head } from 'ramda'
 import { pipeAsync } from 'ramda-async'
@@ -13,14 +13,28 @@ const customExec = async (cmd: string): Promise<string> =>
 export const compileContract = async (
   dirPath: string,
   fileName: string,
-  compilerPath: string
-) =>
-  await customExec(
-    `cd ${dirPath} && cd .. && ${compilerPath} -f combined_json ${join(
+  vyperCompilerPath: string,
+  solidityCompilerPath: string
+) => {
+  const ext = extname(fileName)
+  let cmd = ''
+
+  if (ext === '.vy') {
+    cmd = `cd ${dirPath} && cd .. && ${vyperCompilerPath} -f combined_json ${join(
       dirPath,
       fileName
     )}`
-  )
+  } else if (ext === '.sol') {
+    cmd = `cd ${dirPath} && cd .. && ${solidityCompilerPath} --combined-json abi,bin ${join(
+      dirPath,
+      fileName
+    )}`
+  } else {
+    throw new Error(`Unsupported file extension: ${ext}`)
+  }
+
+  return await customExec(cmd)
+}
 
 const transformContract = (data: any, name: string): Contract => {
   const contract = head(Object.values(data)) as RawContract
@@ -47,14 +61,12 @@ const transformContract = (data: any, name: string): Contract => {
       ...(abiMethod ? abiMethod : {}),
     }
 
-    // Include return types from the ABI
     if (abiMethod && abiMethod.outputs && abiMethod.outputs.length > 0) {
       method.returns = abiMethod.outputs.map((output, index) => {
         const name = output.name || `_output${index}`
         const type = output.type
         let description = ''
 
-        // Retrieve descriptions from devdoc/userdoc if available
         if (method.returns) {
           if (method.returns[name]) {
             description = method.returns[name]
@@ -98,7 +110,8 @@ const transformContract = (data: any, name: string): Contract => {
 export const compileContracts = async (
   dirPath: string,
   fileNames: string[],
-  compilerPath: string
+  vyperCompilerPath: string,
+  solidityCompilerPath: string
 ): Promise<{ fileName: string; data: Contract }[]> =>
   pipeAsync(
     makeProgressBar,
@@ -106,7 +119,12 @@ export const compileContracts = async (
       await Promise.all(
         fileNames.map(async (fileName) => ({
           fileName,
-          data: await compileContract(dirPath, fileName, compilerPath)
+          data: await compileContract(
+            dirPath,
+            fileName,
+            vyperCompilerPath,
+            solidityCompilerPath
+          )
             .then(JSON.parse)
             .then((r) => transformContract(r, fileName))
             .then(tap(handler)),

@@ -4,7 +4,9 @@ export declare const options: import("yargs").Argv<{
 } & {
     output: string;
 } & {
-    compiler: string;
+    vyperCompiler: string;
+} & {
+    solidityCompiler: string;
 } & {
     format: "markdown";
 } & {

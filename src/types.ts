@@ -1,7 +1,8 @@
 export type CliArguments = {
   input: string
   output: string
-  compiler: string
+  vyperCompiler: string
+  solidityCompiler: string
   format: Format
   template: string
 }
@@ -11,7 +12,8 @@ export type Format = 'markdown'
 export const cliArgumentsDefault = {
   input: './contracts',
   output: './docs',
-  compiler: 'vyper',
+  vyperCompiler: 'vyper',
+  solidityCompiler: 'solc',
   format: 'markdown',
   template: '../src/templates/markdown.ejs',
 } as CliArguments

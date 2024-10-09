@@ -1,7 +1,8 @@
 export declare type CliArguments = {
     input: string;
     output: string;
-    compiler: string;
+    vyperCompiler: string;
+    solidityCompiler: string;
     format: Format;
     template: string;
 };
