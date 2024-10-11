@@ -75,9 +75,9 @@ const generateMarkDown = async (
           .map(
             tap((contract) => {
               const filePath = join(output, contract.fileName)
-                .replace(/\.[^.]+$/, '.md')
-                .replace(/([a-z])([A-Z])/g, '$1-$2')
-                .toLowerCase()
+              // .replace(/\.[^.]+$/, '.md')
+              // .replace(/([a-z])([A-Z])/g, '$1-$2')
+              // .toLowerCase()
               console.log('Writing markdown to:', filePath) // Added logging
               writeFileSync(filePath, template(contract).toString())
             })
