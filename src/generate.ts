@@ -78,6 +78,7 @@ const generateMarkDown = async (
                 /\.[^.]+$/,
                 '.md'
               )
+              // removed the below as this breaks things if files are not named in kebab-case
               // .replace(/([a-z])([A-Z])/g, '$1-$2')
               // .toLowerCase()
               console.log('Writing markdown to:', filePath) // Added logging
